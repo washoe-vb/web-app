@@ -27,6 +27,34 @@
     "extends": [
       "react-app",
       "react-app/jest"
+    ],
+    "overrides": [
+      {
+        "files": ["**/*.ts?(x)"],
+        "rules": {
+          "object-curly-spacing": ["error", "always"],
+          "array-bracket-spacing": ["error", "always"],
+          "space-before-function-paren": ["error", "always"],
+          "no-multi-spaces": ["error", { "ignoreEOLComments": false }],
+          "comma-spacing": ["error", { "before": false, "after": true }],
+          "comma-dangle": ["error", "never"],
+          "key-spacing": ["error", { "beforeColon": false, "afterColon": true }],
+          "keyword-spacing": ["error", { "before": true, "after": true }],
+          "no-trailing-spaces": "error",
+          "no-unneeded-ternary": "error",
+          "quotes": ["error", "double"],
+          "semi": "error",
+          "space-before-blocks": "error",
+          "space-infix-ops": "error",
+          "arrow-body-style": ["error", "as-needed"],
+          "arrow-parens": ["error", "as-needed"],
+          "arrow-spacing": "error",
+          "indent": ["error", 2],
+          "no-duplicate-imports": "error",
+          "prefer-destructuring": ["error", {"object": true, "array": false}],
+          "import/no-default-export": "error"
+        }
+      }
     ]
   },
   "browserslist": {
