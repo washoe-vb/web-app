@@ -20,7 +20,10 @@ export const AuthProvider: FC = ({ children }) => {
   const from = location.state?.from?.pathname || "/";
 
   const [ isAuthenticated, setIsAuntheficated ] = useState<boolean>(() => Boolean(localStorage.token));
-  useEffect(() => void isAuthenticated && navigate(from, { replace: true }), [ isAuthenticated ]);
+  useEffect(() => {
+    if (isAuthenticated) navigate(from, { replace: true });
+  }, [ isAuthenticated ]);
+
   window.onstorage = ({ key, newValue }) => key == "token" && setIsAuntheficated(Boolean(newValue));
 
 
