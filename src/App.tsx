@@ -1,4 +1,5 @@
 import { useAuth, AuthProvider } from "hooks/use-auth";
+import { QueryClient, QueryClientProvider } from "react-query";
 import {
   BrowserRouter,
   Routes,
@@ -7,76 +8,38 @@ import {
   Navigate,
   Outlet
 } from "react-router-dom";
-import { Login } from "containers/Login";
 
 import "antd/dist/antd.css";
 
+import { Login } from "containers/Login";
+
 function Layout () {
-  let auth = useAuth();
-  return <div style={{ background: auth.user ? "green" : "red" }}><Outlet /></div>;
+  const { isAuthenticated } = useAuth();
+  return <div style={{ background: isAuthenticated ? "green" : "red" }}><Outlet /></div>;
 }
 
 function RequireAuth ({ children }: { children: JSX.Element }) {
-  let auth = useAuth();
-  let location = useLocation();
-  if (!auth.user) return <Navigate to="/login" state={{ from: location }} />;
-  return children;
+  const location = useLocation();
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? children : <Navigate to="/login" state={{ from: location }} />;
 }
 
-function PublicPage () {
-  return <h3>Public</h3>;
-}
+const Main = () => <h1>Main page</h1>;
 
-function ProtectedPage () {
-  return <h3>Protected</h3>;
-}
-
-
-
-export const App = () => (
-  <BrowserRouter>
-    <AuthProvider>
-      <h1>App</h1>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<PublicPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/protected" element={<RequireAuth><ProtectedPage /></RequireAuth>} />
-        </Route>
-      </Routes>
-    </AuthProvider>
-  </BrowserRouter>
-);
-
-
-
-
-
-
-
-
-
-
-// const ProtectedRoute = ({ element }) => {
-//   const Element = element;
-//   return <Route path="/protected" element={<RequireAuth><Element /></RequireAuth>} />;
-// };
-
-// function AuthStatus () {
-//   let auth = useAuth();
-//   let navigate = useNavigate();
-//   console.log(auth);
-//
-//   if (!auth.user) return <p>You are not logged in.</p>;
-//
-//   return (
-//     <p>
-//       Welcome {auth.user}!{" "}
-//       <button onClick={() => auth.signout(() => navigate("/"))}>
-//         Sign out
-//       </button>
-//     </p>
-//   );
-// }
-
-
+export const App = () => {
+  const queryClient = new QueryClient();
+  return (
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <AuthProvider>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route path="/" element={<RequireAuth><Main /></RequireAuth>} />
+              <Route path="/login" element={<Login />} />
+            </Route>
+          </Routes>
+        </AuthProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
+  );
+};
