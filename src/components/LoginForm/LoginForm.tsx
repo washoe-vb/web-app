@@ -1,8 +1,9 @@
 import { VFC } from "react";
 import { Layout, Form, Input, Button, Typography, Card, Space } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
-const { Title, Text, Link } = Typography;
+const { Title, Text } = Typography;
 const { Content } = Layout;
 
 export type LoginFormValues = {
@@ -46,7 +47,7 @@ export const LoginForm: VFC<LoginFormType> = ({ onLogIn }) => (
           </Form.Item>
         </Form>
         <Space direction="vertical" align="center" style={{ width: "100%" }}>
-          <Text>New to Washoe? <Link href="sign-up">Create an account!</Link></Text>
+          <Text>New to Washoe? <Link to="/signup">Create an account</Link></Text>
         </Space>
       </Card>
     </Content>
