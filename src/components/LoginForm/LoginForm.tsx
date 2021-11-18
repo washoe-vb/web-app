@@ -42,7 +42,7 @@ export const LoginForm: VFC<LoginFormType> = ({ onLogIn }) => (
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
-          Log in
+              Log In
             </Button>
           </Form.Item>
         </Form>
