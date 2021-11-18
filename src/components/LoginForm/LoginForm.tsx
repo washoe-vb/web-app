@@ -6,7 +6,7 @@ const { Title, Text, Link } = Typography;
 const { Content } = Layout;
 
 export type LoginFormValues = {
-  login: string;
+  email: string;
   password: string;
 }
 
@@ -22,10 +22,10 @@ export const LoginForm: VFC<LoginFormType> = ({ onLogIn }) => (
           <Title level={3}>Log In</Title>
           <Text>to continue to Washoe</Text>
         </Space>
-        <Form name="normal_login" onFinish={onLogIn}>
+        <Form onFinish={onLogIn}>
           <Form.Item
-            name="login"
-            rules={[ { required: true, message: "Please input your login!" } ]}
+            name="email"
+            rules={[ { required: true, message: "Please input your email!" } ]}
           >
             <Input prefix={<UserOutlined />} placeholder="Login" />
           </Form.Item>
