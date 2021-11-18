@@ -21,7 +21,7 @@ export const LoginForm: VFC<LoginFormType> = ({ onLogIn }) => (
       <Card>
         <Space direction="vertical" align="center" style={{ width: "100%", marginBottom: "16px" }}>
           <Title level={3}>Log In</Title>
-          <Text>to continue to Washoe</Text>
+          <Text type="secondary">to continue to Washoe</Text>
         </Space>
         <Form onFinish={onLogIn}>
           <Form.Item
