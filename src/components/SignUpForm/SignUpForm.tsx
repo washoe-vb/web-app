@@ -9,7 +9,6 @@ const { Content } = Layout;
 export type SignUpFormValues = {
   email: string;
   password: string;
-  confirm: string;
 }
 
 type SignUpFormType = {
@@ -54,32 +53,6 @@ export const SignUpForm: VFC<SignUpFormType> = ({ onSignUp }) => (
             <Input.Password
               prefix={<LockOutlined />}
               placeholder="Password"
-            />
-          </Form.Item>
-
-          <Form.Item
-            name="confirm"
-            dependencies={[ "password" ]}
-            hasFeedback
-            rules={[
-              {
-                required: true,
-                message: "Please confirm your password!"
-              },
-              ({ getFieldValue }) => ({
-                validator (_, value) {
-                  if (!value || getFieldValue("password") === value) {
-                    return Promise.resolve();
-                  }
-
-                  return Promise.reject(new Error("The two passwords that you entered do not match!"));
-                }
-              })
-            ]}
-          >
-            <Input.Password
-              prefix={<LockOutlined />}
-              placeholder="Confirm password"
             />
           </Form.Item>
 
