@@ -3,8 +3,8 @@ import { Form, Input, Button, FormInstance } from "antd";
 
 export type AddWordFormValues = {
   word: string;
-  meanings?: string[];
-  examples?: string[];
+  meaning?: string;
+  example?: string;
 }
 
 type AddWordFormType = {
@@ -20,11 +20,11 @@ export const AddWordForm: VFC<AddWordFormType> = ({ onAddWord, isLoading, form }
       <Input disabled={isLoading} placeholder="Word" />
     </Form.Item>
 
-    <Form.Item name={[ "meanings", 0 ]}>
+    <Form.Item name="meaning">
       <Input.TextArea disabled={isLoading} placeholder="Meaning" />
     </Form.Item>
 
-    <Form.Item name={[ "examples", 0 ]}>
+    <Form.Item name="example">
       <Input.TextArea disabled={isLoading} placeholder="Example" />
     </Form.Item>
 
