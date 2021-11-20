@@ -5,20 +5,28 @@ import { Form, Typography, message } from "antd";
 
 const { Title } = Typography;
 
+const removeEpmtyFields = ({ word, meaning, example }: AddWordFormValues) => ({
+  word,
+  ...(meaning ? { meaning } : {}),
+  ...(example ? { example } : {})
+});
+
 export const AddWord = () => {
   const { mutate: addWord, isLoading } = useAddWord();
   const [ form ] = Form.useForm();
   const { resetFields } = form;
 
-  const onAddWord = (vals: AddWordFormValues) => addWord(vals, {
-    onSuccess () {
-      message.success("Success!");
-      resetFields();
-    },
-    onError () {
-      message.error("Something went wrong");
-    }
-  });
+  const onAddWord = (formValues: AddWordFormValues) => {
+    addWord(removeEpmtyFields(formValues), {
+      onSuccess () {
+        message.success("Success!");
+        resetFields();
+      },
+      onError () {
+        message.error("Something went wrong");
+      }
+    });
+  };
 
   return (
     <Centered>
