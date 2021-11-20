@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { LoginFormValues } from "components/LoginForm";
 import { AxiosResponse } from "axios";
 import { instance } from "api";
+import { message } from "antd";
 
 
 interface AuthContextType {
@@ -34,6 +35,9 @@ export const AuthProvider: FC = ({ children }) => {
       onSuccess ({ data: { token } }) {
         setIsAuntheficated(Boolean(token));
         localStorage.setItem("token", token);
+      },
+      onError () {
+        message.error("Something went wrong");
       }
     }
   );
@@ -43,6 +47,9 @@ export const AuthProvider: FC = ({ children }) => {
       onSuccess ({ data: { token } }) {
         setIsAuntheficated(Boolean(token));
         localStorage.setItem("token", token);
+      },
+      onError () {
+        message.error("Something went wrong");
       }
     }
   );
