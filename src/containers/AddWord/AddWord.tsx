@@ -1,7 +1,9 @@
 import { AddWordForm, AddWordFormValues } from "components/AddWordForm";
 import { useAddWord } from "hooks";
 import { Centered } from "components/Centered";
-import { Form } from "antd";
+import { Form, Typography } from "antd";
+
+const { Title } = Typography;
 
 export const AddWord = () => {
   const { mutate: addWord, isLoading } = useAddWord();
@@ -14,6 +16,7 @@ export const AddWord = () => {
 
   return (
     <Centered>
+      <Title level={3} >Add a Word</Title>
       <AddWordForm onAddWord={onAddWord} isLoading={isLoading} form={form} />
     </Centered>
   );
