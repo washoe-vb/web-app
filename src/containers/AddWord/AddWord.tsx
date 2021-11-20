@@ -1,5 +1,6 @@
 import { AddWordForm, AddWordFormValues } from "components/AddWordForm";
 import { useAddWord } from "hooks";
+import { Centered } from "components/Centered";
 import { Form } from "antd";
 
 export const AddWord = () => {
@@ -11,5 +12,9 @@ export const AddWord = () => {
     onSuccess: () => resetFields()
   });
 
-  return <AddWordForm onAddWord={onAddWord} isLoading={isLoading} form={form} />;
+  return (
+    <Centered>
+      <AddWordForm onAddWord={onAddWord} isLoading={isLoading} form={form} />
+    </Centered>
+  );
 };
