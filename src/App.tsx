@@ -13,6 +13,7 @@ import "antd/dist/antd.css";
 
 import { Login } from "containers/Login";
 import { SignUp } from "containers/SignUp";
+import { AddWord } from "containers/AddWord";
 
 function Layout () {
   const { isAuthenticated } = useAuth();
@@ -25,7 +26,7 @@ function RequireAuth ({ children }: { children: JSX.Element }) {
   return isAuthenticated ? children : <Navigate to="/login" state={{ from: location }} />;
 }
 
-const Main = () => <h1>Main page</h1>;
+const Main = () => <AddWord />;
 
 export const App = () => {
   const queryClient = new QueryClient();

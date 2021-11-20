@@ -1,0 +1,1 @@
+export { useAddWord } from "./useAddWord";
