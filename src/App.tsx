@@ -1,13 +1,7 @@
 import { useAuth, AuthProvider } from "hooks/use-auth";
 import { QueryClient, QueryClientProvider } from "react-query";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  useLocation,
-  Navigate,
-  Outlet
-} from "react-router-dom";
+import { Centered } from "components/Centered";
+import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom";
 
 import "antd/dist/antd.css";
 
@@ -17,7 +11,8 @@ import { AddWord } from "containers/AddWord";
 
 function Layout () {
   const { isAuthenticated } = useAuth();
-  return <div style={{ background: isAuthenticated ? "green" : "red" }}><Outlet /></div>;
+  if (!isAuthenticated) return <Centered><Outlet /></Centered>;
+  return <Outlet />;
 }
 
 function RequireAuth ({ children }: { children: JSX.Element }) {
