@@ -1,10 +1,9 @@
 import { VFC } from "react";
-import { Layout, Typography, Card, Space, Form, Input, Button } from "antd";
+import { Typography, Space, Form, Input, Button } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
 const { Title, Text } = Typography;
-const { Content } = Layout;
 
 export type SignUpFormValues = {
   email: string;
