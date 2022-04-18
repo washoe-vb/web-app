@@ -1,7 +1,7 @@
 import { useAuth, AuthProvider } from "hooks/use-auth";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Centered } from "components/Centered";
-import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom";
 
 import "antd/dist/antd.css";
 
@@ -27,17 +27,16 @@ export const App = () => {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <AuthProvider>
-          <Routes>
-            <Route element={<Layout />}>
-              <Route path="/" element={<RequireAuth><Main /></RequireAuth>} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/login" element={<Login />} />
-            </Route>
-          </Routes>
-        </AuthProvider>
-      </BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<RequireAuth><Main /></RequireAuth>} />
+            <Route path="/dict" element={<RequireAuth><Dictionary /></RequireAuth>} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/login" element={<Login />} />
+          </Route>
+        </Routes>
+      </AuthProvider>
     </QueryClientProvider>
   );
 };
