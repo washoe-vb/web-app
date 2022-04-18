@@ -8,6 +8,7 @@ import "antd/dist/antd.css";
 import { Login } from "containers/Login";
 import { SignUp } from "containers/SignUp";
 import { AddWord } from "containers/AddWord";
+import { Dictionary } from "components/Dictionary";
 
 function Layout () {
   const { isAuthenticated } = useAuth();
