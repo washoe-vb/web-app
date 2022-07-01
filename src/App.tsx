@@ -9,6 +9,7 @@ import { Login } from "containers/Login";
 import { SignUp } from "containers/SignUp";
 import { AddWord } from "containers/AddWord";
 import { WordsList } from "components/Dictionary";
+import { Dictionary } from "containers/Dictionary";
 
 function Layout () {
   const { isAuthenticated } = useAuth();
@@ -33,6 +34,7 @@ export const App = () => {
           <Route element={<Layout />}>
             <Route path="/" element={<RequireAuth><Main /></RequireAuth>} />
             <Route path="/words-list" element={<RequireAuth><WordsList /></RequireAuth>} />
+            <Route path="/dictionary" element={<Dictionary />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
           </Route>
