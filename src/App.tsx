@@ -23,7 +23,7 @@ function RequireAuth ({ children }: { children: JSX.Element }) {
   return isAuthenticated ? children : <Navigate to="/login" state={{ from: location }} />;
 }
 
-const Main = () => <AddWord />;
+const Main = () => <Dictionary />;
 
 export const App = () => {
   const queryClient = new QueryClient();
