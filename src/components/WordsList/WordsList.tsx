@@ -1,5 +1,5 @@
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Table, Divider, Skeleton } from "antd";
+import { Table, Skeleton } from "antd";
 import { useInfiniteQuery } from "react-query";
 import { AxiosResponse } from "axios";
 import { instance } from "api";
