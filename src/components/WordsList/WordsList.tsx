@@ -46,7 +46,7 @@ function getNextPageParam (
   return undefined;
 }
 
-export const Dictionary = () => {
+export const WordsList = () => {
   const { data, fetchNextPage, hasNextPage, status } = useInfiniteQuery(
     "words",
     ({ pageParam = 0 }) => instance.get("/word", { params: { skip: pageParam, limit: LIMIT } }),

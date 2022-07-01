@@ -8,7 +8,7 @@ import "antd/dist/antd.css";
 import { Login } from "containers/Login";
 import { SignUp } from "containers/SignUp";
 import { AddWord } from "containers/AddWord";
-import { Dictionary } from "components/Dictionary";
+import { WordsList } from "components/Dictionary";
 
 function Layout () {
   const { isAuthenticated } = useAuth();
@@ -32,7 +32,7 @@ export const App = () => {
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<RequireAuth><Main /></RequireAuth>} />
-            <Route path="/dict" element={<RequireAuth><Dictionary /></RequireAuth>} />
+            <Route path="/words-list" element={<RequireAuth><WordsList /></RequireAuth>} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
           </Route>
