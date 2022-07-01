@@ -1,8 +1,13 @@
-import { AddWordFormValues } from "components/AddWordForm";
 import { useMutation } from "react-query";
 import { instance } from "api";
 
+export type WordData = {
+  word: string;
+  meaning?: string;
+  example?: string;
+}
+
 export const useAddWord = () => useMutation(
-  (formValues: AddWordFormValues) => instance.post("/word/create", formValues)
+  (WordData: WordData) => instance.post("/word/create", WordData)
 );
 
