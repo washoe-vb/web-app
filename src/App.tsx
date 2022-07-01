@@ -33,6 +33,7 @@ export const App = () => {
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<RequireAuth><Main /></RequireAuth>} />
+            <Route path="/add-word" element={<RequireAuth><AddWord /></RequireAuth>} />
             <Route path="/words-list" element={<RequireAuth><WordsList /></RequireAuth>} />
             <Route path="/dictionary" element={<Dictionary />} />
             <Route path="/signup" element={<SignUp />} />
