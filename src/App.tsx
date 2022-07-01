@@ -8,7 +8,7 @@ import "antd/dist/antd.css";
 import { Login } from "containers/Login";
 import { SignUp } from "containers/SignUp";
 import { AddWord } from "containers/AddWord";
-import { WordsList } from "components/Dictionary";
+import { WordsList } from "components/WordsList";
 import { Dictionary } from "containers/Dictionary";
 
 function Layout () {
