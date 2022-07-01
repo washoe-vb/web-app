@@ -1,14 +1,9 @@
 import { VFC } from "react";
 import { Form, Input, Button, FormInstance } from "antd";
-
-export type AddWordFormValues = {
-  word: string;
-  meaning?: string;
-  example?: string;
-}
+import { WordData } from "hooks/useAddWord";
 
 type AddWordFormType = {
-  onAddWord: (word: AddWordFormValues) => void;
+  onAddWord: (WordData: WordData) => void;
   isLoading: boolean;
   form: FormInstance;
 }
