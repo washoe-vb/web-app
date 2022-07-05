@@ -10,7 +10,7 @@ function useRedirectToRequestedPage (isAuthenticated: boolean) {
 
   useEffect(() => {
     if (isAuthenticated) navigate(from, { replace: true });
-  }, [ isAuthenticated ]);
+  }, [ isAuthenticated, from, navigate ]);
 }
 
 
