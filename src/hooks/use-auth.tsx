@@ -19,7 +19,7 @@ const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 export const AuthProvider: FC = ({ children }) => {
   const [ isAuthenticated, setIsAuntheficated ] = useState<boolean>(() => Boolean(localStorage.token));
 
-  window.onstorage = ({ key, newValue }) => key == "token" && setIsAuntheficated(Boolean(newValue));
+  window.onstorage = ({ key, newValue }) => key === "token" && setIsAuntheficated(Boolean(newValue));
 
 
   const { mutate: logIn, isLoading: isLoggingIn } = useMutation(

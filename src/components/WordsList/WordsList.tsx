@@ -68,7 +68,7 @@ export const WordsList = () => {
         dataSource={words}
         pagination={false}
         bordered
-        loading={status == "loading"}
+        loading={status === "loading"}
         sticky // Doesn't work because of InfiniteScroll
       />
     </InfiniteScroll>
