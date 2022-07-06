@@ -1,27 +1,29 @@
-import { AddWordForm } from "components/AddWordForm";
-import { useAddWord } from "hooks";
+import { useSyncInputWithQueryString, useAddWord } from "hooks";
+import { Form, Typography, message, Input, Button } from "antd";
 import { Centered } from "components/Centered";
-import { Form, Typography, message } from "antd";
 import { WordData } from "hooks/useAddWord";
 
 const { Title } = Typography;
 
-const removeEpmtyFields = ({ word, meaning, example }: WordData) => ({
+const removeEmptyFields = ({ word, definition, example }: WordData) => ({
   word,
-  ...(meaning ? { meaning } : {}),
+  ...(definition ? { definition } : {}),
   ...(example ? { example } : {})
 });
 
 export const AddWord = () => {
+  const [ word, onWordChange ] = useSyncInputWithQueryString("word");
+  const [ definition, onDefinitionChange ] = useSyncInputWithQueryString("definition");
+  const [ example, onExampleChange ] = useSyncInputWithQueryString("example");
+
   const { mutate: addWord, isLoading } = useAddWord();
   const [ form ] = Form.useForm();
-  const { resetFields } = form;
 
-  const onAddWord = (formValues: WordData) => {
-    addWord(removeEpmtyFields(formValues), {
+  const handleAddWord = (formValues: WordData) => {
+    addWord(removeEmptyFields(formValues), {
       onSuccess () {
         message.success("Success!");
-        resetFields();
+        form.resetFields();
       },
       onError () {
         message.error("Something went wrong");
@@ -31,8 +33,21 @@ export const AddWord = () => {
 
   return (
     <Centered>
-      <Title level={3} >Add a Word</Title>
-      <AddWordForm onAddWord={onAddWord} isLoading={isLoading} form={form} />
+      <Title level={3}>Add a Word</Title>
+      <Form form={form} initialValues={{ word, definition, example }} onFinish={handleAddWord}>
+        <Form.Item name="word" required>
+          <Input onChange={onWordChange} disabled={isLoading} placeholder="Word" />
+        </Form.Item>
+        <Form.Item name="definition" required>
+          <Input.TextArea onChange={onDefinitionChange} disabled={isLoading} placeholder="Definition" />
+        </Form.Item>
+        <Form.Item name="example" required>
+          <Input.TextArea onChange={onExampleChange} disabled={isLoading} placeholder="Example" />
+        </Form.Item>
+        <Button loading={isLoading} type="primary" htmlType="submit" style={{ width: "100%" }} >
+          Add
+        </Button>
+      </Form>
     </Centered>
   );
 };
