@@ -1,4 +1,4 @@
-import { VFC } from "react";
+import { VFC, useRef, useLayoutEffect } from "react";
 import { useSyncInputWithQueryString, useDebounce } from "hooks";
 import { useWordMeaning } from "api/queries/getWordMeaning";
 import { Link } from "react-router-dom";
@@ -98,10 +98,15 @@ const Result = ({ word }: { word: string }) => {
 
 export const Dictionary = () => {
   const [ word, onWordChange ] = useSyncInputWithQueryString("word");
+  const inputField = useRef<HTMLInputElement>(null);
+
+  useLayoutEffect(() => {
+    (inputField.current as HTMLInputElement).focus();
+  });
 
   return (
     <>
-      <input type="text" value={word} onChange={onWordChange} />
+      <input ref={inputField} type="text" value={word} onChange={onWordChange} />
       <Result word={word} />
     </>
   );
