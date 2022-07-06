@@ -3,7 +3,7 @@ import { instance } from "api";
 
 export type WordData = {
   word: string;
-  meaning?: string;
+  definition?: string;
   example?: string;
 }
 
