@@ -8,7 +8,7 @@ const getWordDefinition = (word: string) =>
     .then(({ data }) => data);
 
 export const useGetWordDefinition = (word: string) =>
-  useQuery([ "get-definition" ], () => getWordDefinition(word), {
+  useQuery([ "get-definition" ], () => word && getWordDefinition(word), {
     refetchOnWindowFocus: false,
     cacheTime: Infinity
   });
