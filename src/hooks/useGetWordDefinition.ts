@@ -3,12 +3,12 @@ import { useQuery } from "react-query";
 
 const engDictionaryPath = "https://api.dictionaryapi.dev/api/v2/entries/en/";
 
-const getWordMeaning = (word: string) =>
+const getWordDefinition = (word: string) =>
   axios.get(engDictionaryPath + word)
     .then(({ data }) => data);
 
-export const useWordMeaning = (word: string) =>
-  useQuery([ "get-meaning" ], () => getWordMeaning(word), {
+export const useGetWordDefinition = (word: string) =>
+  useQuery([ "get-definition" ], () => getWordDefinition(word), {
     refetchOnWindowFocus: false,
     cacheTime: Infinity
   });
