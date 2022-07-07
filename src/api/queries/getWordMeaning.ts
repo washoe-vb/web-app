@@ -8,8 +8,7 @@ const getWordMeaning = (word: string) =>
     .then(({ data }) => data);
 
 export const useWordMeaning = (word: string) =>
-  useQuery([ "get-meaning", word ], () => getWordMeaning(word), {
-    enabled: Boolean(word),
-    cacheTime: Infinity,
-    refetchOnWindowFocus: false
+  useQuery([ "get-meaning" ], () => getWordMeaning(word), {
+    refetchOnWindowFocus: false,
+    cacheTime: Infinity
   });
