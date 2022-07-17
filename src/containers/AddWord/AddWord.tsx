@@ -8,7 +8,7 @@ const { Title } = Typography;
 const removeEmptyFields = ({ word, definition, example }: WordData) => ({
   word,
   ...(definition ? { definition } : {}),
-  ...(example ? { example } : {})
+  ...(example ? { example } : {}),
 });
 
 export const AddWord = () => {
@@ -17,34 +17,55 @@ export const AddWord = () => {
   const [example, onExampleChange] = useQueryString("example");
 
   const { mutate: addWord, isLoading } = useAddWord();
-  const [ form ] = Form.useForm();
+  const [form] = Form.useForm();
 
   const handleAddWord = (formValues: WordData) => {
     addWord(removeEmptyFields(formValues), {
-      onSuccess () {
+      onSuccess() {
         message.success("Success!");
         form.resetFields();
       },
-      onError () {
+      onError() {
         message.error("Something went wrong");
-      }
+      },
     });
   };
 
   return (
     <Centered>
       <Title level={3}>Add a Word</Title>
-      <Form form={form} initialValues={{ word, definition, example }} onFinish={handleAddWord}>
+      <Form
+        form={form}
+        initialValues={{ word, definition, example }}
+        onFinish={handleAddWord}
+      >
         <Form.Item name="word" required>
-          <Input onChange={onWordChange} disabled={isLoading} placeholder="Word" />
+          <Input
+            onChange={({ currentTarget }) => onWordChange(currentTarget.value)}
+            disabled={isLoading}
+            placeholder="Word"
+          />
         </Form.Item>
         <Form.Item name="definition" required>
-          <Input.TextArea onChange={onDefinitionChange} disabled={isLoading} placeholder="Definition" />
+          <Input.TextArea
+            onChange={console.log}
+            disabled={isLoading}
+            placeholder="Definition"
+          />
         </Form.Item>
         <Form.Item name="example" required>
-          <Input.TextArea onChange={onExampleChange} disabled={isLoading} placeholder="Example" />
+          <Input.TextArea
+            onChange={console.log}
+            disabled={isLoading}
+            placeholder="Example"
+          />
         </Form.Item>
-        <Button loading={isLoading} type="primary" htmlType="submit" style={{ width: "100%" }} >
+        <Button
+          loading={isLoading}
+          type="primary"
+          htmlType="submit"
+          style={{ width: "100%" }}
+        >
           Add
         </Button>
       </Form>

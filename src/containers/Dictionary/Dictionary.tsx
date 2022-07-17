@@ -1,108 +1,121 @@
-import { VFC, useRef, useLayoutEffect } from "react";
-import { useWordMeaning } from "api/queries/getWordMeaning";
-import { useQueryString, useDebounce } from "hooks";
+import { useQueryString, useGetWordDefinition } from "hooks";
+import { VFC } from "react";
 import { Link } from "react-router-dom";
-
+import { Form, Input } from "antd";
 
 type WikiWordType = {
-  word: string,
-  phonetics: string[],
-  meanings: Array<WikiMeaningType>,
-}
+  word: string;
+  phonetics: string[];
+  meanings: Array<WikiMeaningType>;
+};
 
 type WikiMeaningType = {
-  partOfSpeech: string,
-  definitions: Array<WikiDefinitionType>,
-  synonyms: string[],
-  antonyms: string[],
-}
+  partOfSpeech: string;
+  definitions: Array<WikiDefinitionType>;
+  synonyms: string[];
+  antonyms: string[];
+};
 
 type WikiDefinitionType = {
-  definition: string,
+  definition: string;
   example?: string;
   synonyms: string[];
   antonyms: string[];
-}
-
-
-// function meaningMapper (meaning: WikiMeaningType) {
-//   return meaning.definitions.map((def: WikiDefinitionType) => ({
-//     partOfSpeech: meaning.partOfSpeech,
-//     definition: def.definition,
-//     synonyms: def.synonyms,
-//     examples: def.example ? [ def.example ] : []
-//   }));
-// }
-
-
-//type MeaningType = {
-//  definition: string,
-//  partOfSpeech: string,
-//  synonyms: string[],
-//  examples: string[],
-//  }
+};
 
 type DefinitionTypes = {
   definition: string;
   synonyms: string[];
   examples: undefined | string[];
-}
+};
 
-const Definition: VFC<DefinitionTypes> = ({ definition, synonyms, examples }) => (
+const Definition: VFC<DefinitionTypes> = ({
+  definition,
+  synonyms,
+  examples,
+}) => (
   <>
     <li>
       {definition}
-      {synonyms && " : " + JSON.stringify(synonyms.map(s => s.toUpperCase()))}
+      {synonyms && " : " + JSON.stringify(synonyms.map((s) => s.toUpperCase()))}
     </li>
-    {examples && <ul>{examples.map((example, idx) => <li key={idx}>{example}</li>)}</ul>}
+    {examples && (
+      <ul>
+        {examples.map((example, idx) => (
+          <li key={idx}>{example}</li>
+        ))}
+      </ul>
+    )}
   </>
 );
 
-const Result = ({ word }: { word: string }) => {
+type ResultType = {
+  isLoading: boolean;
+  isError: boolean;
+  data: WikiWordType[];
+};
 
-  const debouncedWord = useDebounce(word, 1000);
-  const { isError, isLoading, isSuccess, data } = useWordMeaning(debouncedWord);
-
+const Result = ({ isLoading, isError, data }: ResultType) => {
+  console.log("data: ", data);
   if (isError) return <span>Error occured</span>;
   if (isLoading) return <span>Loading...</span>;
-  if (!isSuccess) return <span>Enter some word to see it definition</span>;
+  if (!data.length) return <span>"Empty data</span>;
+  // if (!isSuccess) return <span>Enter some word to see it definition</span>;
 
   return (
     <>
-      {data.map(({ word, ...instance }: WikiWordType) => instance.meanings.map((meaning: any) => {
-        const { partOfSpeech } = meaning;
-        return (
-          <>
-            <h2>{partOfSpeech}</h2>
-            <ul>
-              {meaning.definitions.map((definition: any, idx: number) =>
-                <Link to={`/add-word?word=${word}&definition=${definition.definition || ""}&example=${definition.example || ""}`}>
-                  <Definition
-                    key={idx}
-                    definition={definition.definition}
-                    synonyms={Boolean(definition.synonyms.length) && definition.synonyms}
-                    examples={definition.example && [ definition.example ]}/>
-                </Link>
-              )}
-            </ul>
-          </>
-        );
-      }
-      ))}
+      {data.map(({ word, ...instance }: WikiWordType) =>
+        instance.meanings.map((meaning: any) => {
+          const { partOfSpeech } = meaning;
+          return (
+            <>
+              <h2>{partOfSpeech}</h2>
+              <ul>
+                {meaning.definitions.map((definition: any, idx: number) => (
+                  <Link
+                    to={`/add-word?word=${word}&definition=${
+                      definition.definition || ""
+                    }&example=${definition.example || ""}`}
+                  >
+                    <Definition
+                      key={idx}
+                      definition={definition.definition}
+                      synonyms={
+                        Boolean(definition.synonyms.length) &&
+                        definition.synonyms
+                      }
+                      examples={definition.example && [definition.example]}
+                    />
+                  </Link>
+                ))}
+              </ul>
+            </>
+          );
+        })
+      )}
     </>
   );
 };
 
-
-
-
 export const Dictionary = () => {
   const [word, onWordChange] = useQueryString("word");
+  const { isError, isLoading, data } = useGetWordDefinition(word);
+  const [form] = Form.useForm();
 
   return (
     <>
-      <input ref={inputField} type="text" value={word} onChange={onWordChange} />
-      <Result word={word} />
+      <Form form={form} onFinish={({ word }) => onWordChange(word)}>
+        <Form.Item name="word">
+          <Input
+            type="text"
+            defaultValue={word}
+            disabled={isLoading}
+            placeholder="Enter a word"
+          />
+        </Form.Item>
+      </Form>
+
+      <Result isLoading={isLoading} isError={isError} data={data} />
     </>
   );
 };
