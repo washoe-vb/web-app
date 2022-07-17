@@ -1,4 +1,4 @@
-import { useSyncInputWithQueryString, useAddWord } from "hooks";
+import { useQueryString, useAddWord } from "hooks";
 import { Form, Typography, message, Input, Button } from "antd";
 import { Centered } from "components/Centered";
 import { WordData } from "hooks/useAddWord";
@@ -12,9 +12,9 @@ const removeEmptyFields = ({ word, definition, example }: WordData) => ({
 });
 
 export const AddWord = () => {
-  const [ word, onWordChange ] = useSyncInputWithQueryString("word");
-  const [ definition, onDefinitionChange ] = useSyncInputWithQueryString("definition");
-  const [ example, onExampleChange ] = useSyncInputWithQueryString("example");
+  const [word, onWordChange] = useQueryString("word");
+  const [definition, onDefinitionChange] = useQueryString("definition");
+  const [example, onExampleChange] = useQueryString("example");
 
   const { mutate: addWord, isLoading } = useAddWord();
   const [ form ] = Form.useForm();
