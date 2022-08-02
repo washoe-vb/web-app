@@ -5,7 +5,6 @@ import { AxiosResponse } from "axios";
 import { instance } from "api";
 import { message } from "antd";
 
-
 interface AuthContextType {
   isAuthenticated: boolean;
   isLoggingIn: boolean;
@@ -17,32 +16,36 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export const AuthProvider: FC = ({ children }) => {
-  const [ isAuthenticated, setIsAuntheficated ] = useState<boolean>(() => Boolean(localStorage.token));
+  const [isAuthenticated, setIsAuntheficated] = useState<boolean>(() =>
+    Boolean(localStorage.token)
+  );
 
-  window.onstorage = ({ key, newValue }) => key === "token" && setIsAuntheficated(Boolean(newValue));
-
+  window.onstorage = ({ key, newValue }) =>
+    key === "token" && setIsAuntheficated(Boolean(newValue));
 
   const { mutate: logIn, isLoading: isLoggingIn } = useMutation(
-    (formValues: LoginFormValues) => instance.post("/user/login", formValues), {
-      onSuccess ({ data: { token } }) {
+    (formValues: LoginFormValues) => instance.post("/user/login", formValues),
+    {
+      onSuccess({ data: { token } }) {
         setIsAuntheficated(Boolean(token));
         localStorage.setItem("token", token);
       },
-      onError () {
+      onError() {
         message.error("Something went wrong");
-      }
+      },
     }
   );
 
   const { mutate: signUp, isLoading: isSigningUp } = useMutation(
-    (formValues: LoginFormValues) => instance.post("/user/signup", formValues), {
-      onSuccess ({ data: { token } }) {
+    (formValues: LoginFormValues) => instance.post("/user/signup", formValues),
+    {
+      onSuccess({ data: { token } }) {
         setIsAuntheficated(Boolean(token));
         localStorage.setItem("token", token);
       },
-      onError () {
+      onError() {
         message.error("Something went wrong");
-      }
+      },
     }
   );
 
