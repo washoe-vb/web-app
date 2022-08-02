@@ -48,14 +48,18 @@ export const AddWord = () => {
         </Form.Item>
         <Form.Item name="definition" required>
           <Input.TextArea
-            onChange={console.log}
+            onChange={({ currentTarget }) =>
+              onDefinitionChange(currentTarget.value)
+            }
             disabled={isLoading}
             placeholder="Definition"
           />
         </Form.Item>
         <Form.Item name="example" required>
           <Input.TextArea
-            onChange={console.log}
+            onChange={({ currentTarget }) =>
+              onExampleChange(currentTarget.value)
+            }
             disabled={isLoading}
             placeholder="Example"
           />
