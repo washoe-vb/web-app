@@ -64,20 +64,20 @@ const Result = ({ isLoading, isError, data }: ResultType) => {
   return (
     <>
       {data.map(({ word, ...instance }: WikiWordType) =>
-        instance.meanings.map((meaning: any) => {
+        instance.meanings.map((meaning: any, idx) => {
           const { partOfSpeech } = meaning;
           return (
-            <>
+            <div key={idx}>
               <h2>{partOfSpeech}</h2>
               <ul>
                 {meaning.definitions.map((definition: any, idx: number) => (
                   <Link
+                    key={idx}
                     to={`/add-word?word=${word}&definition=${
                       definition.definition || ""
                     }&example=${definition.example || ""}`}
                   >
                     <Definition
-                      key={idx}
                       definition={definition.definition}
                       synonyms={
                         Boolean(definition.synonyms.length) &&
@@ -88,7 +88,7 @@ const Result = ({ isLoading, isError, data }: ResultType) => {
                   </Link>
                 ))}
               </ul>
-            </>
+            </div>
           );
         })
       )}
