@@ -56,7 +56,6 @@ type ResultType = {
 };
 
 const Result = ({ isLoading, isError, data }: ResultType) => {
-  console.log("data: ", data);
   if (isError) return <span>Error occured</span>;
   if (isLoading) return <span>Loading...</span>;
   if (!data.length) return <span>"Empty data</span>;
