@@ -103,14 +103,13 @@ export const Dictionary = () => {
 
   return (
     <>
-      <Form form={form} onFinish={({ word }) => onWordChange(word)}>
+      <Form
+        form={form}
+        initialValues={{ word }}
+        onFinish={({ word }) => onWordChange(word)}
+      >
         <Form.Item name="word">
-          <Input
-            type="text"
-            defaultValue={word}
-            disabled={isLoading}
-            placeholder="Enter a word"
-          />
+          <Input type="text" disabled={isLoading} placeholder="Enter a word" />
         </Form.Item>
       </Form>
 
