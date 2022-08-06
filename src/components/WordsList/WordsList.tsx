@@ -2,13 +2,8 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Table, Skeleton } from "antd";
 import { useInfiniteQuery } from "react-query";
 import { AxiosResponse } from "axios";
+import { Word } from "washoe-goods";
 import { instance } from "api";
-
-type Word = {
-  word: string;
-  example: string;
-  meaning: string;
-};
 
 type WordData = {
   words: Word[];
@@ -19,23 +14,23 @@ const columns = [
   {
     title: <strong>Word</strong>,
     dataIndex: "word",
-    key: "word"
+    key: "word",
   },
   {
     title: <strong>Meaning</strong>,
     dataIndex: "meaning",
-    key: "meaning"
+    key: "meaning",
   },
   {
     title: <strong>Example</strong>,
     dataIndex: "example",
-    key: "example"
-  }
+    key: "example",
+  },
 ];
 
 const LIMIT = 25;
 
-function getNextPageParam (
+function getNextPageParam(
   lastPage: AxiosResponse<WordData>,
   pages: Array<AxiosResponse<WordData>>
 ) {
@@ -49,12 +44,15 @@ function getNextPageParam (
 export const WordsList = () => {
   const { data, fetchNextPage, hasNextPage, status } = useInfiniteQuery(
     "words",
-    ({ pageParam = 0 }) => instance.get("/word", { params: { skip: pageParam, limit: LIMIT } }),
+    ({ pageParam = 0 }) =>
+      instance.get("/word", { params: { skip: pageParam, limit: LIMIT } }),
     { getNextPageParam }
   );
 
   const words: Word[] =
     data?.pages.reduce<Array<Word>>((a, b) => a.concat(b.data.words), []) || [];
+
+  console.log(words);
 
   return (
     <InfiniteScroll
@@ -66,6 +64,7 @@ export const WordsList = () => {
       <Table
         columns={columns}
         dataSource={words}
+        rowKey={({ _id }) => _id}
         pagination={false}
         bordered
         loading={status === "loading"}
