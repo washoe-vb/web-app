@@ -20,6 +20,7 @@
     "react-router-dom": "6",
     "react-scripts": "4.0.3",
     "typescript": "^4.1.2",
+    "washoe-goods": "washoe-vb/washoe-goods",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
