@@ -1,4 +1,7 @@
 import { VFC } from "react";
+import { useAddWord } from "hooks";
+import { LoadingButton } from "@mui/lab";
+import { Save as DeleteIcon } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
 import {
   Box,
@@ -30,6 +33,12 @@ export const EntryCard: VFC<EntryCardType> = ({
     formattedDefinition || ""
   }&example=${example || ""}`;
 
+  const { mutate: addWord, isLoading } = useAddWord();
+
+  async function handleQuickAdd(): Promise<any> {
+    addWord({ word, definition: formattedDefinition, example });
+  }
+
   return (
     <Box sx={{ mb: 1 }}>
       <Card variant="outlined">
@@ -48,6 +57,9 @@ export const EntryCard: VFC<EntryCardType> = ({
         <CardActions>
           <Button component={RouterLink} to={link} size="large">
             Add
+          </Button>
+          <Button disabled={isLoading} onClick={handleQuickAdd} size="large">
+            {isLoading ? "Adding..." : "Quick Add"}
           </Button>
         </CardActions>
       </Card>
