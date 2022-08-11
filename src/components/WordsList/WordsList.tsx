@@ -17,9 +17,9 @@ const columns = [
     key: "word",
   },
   {
-    title: <strong>Meaning</strong>,
-    dataIndex: "meaning",
-    key: "meaning",
+    title: <strong>Definition</strong>,
+    dataIndex: "definition",
+    key: "definition",
   },
   {
     title: <strong>Example</strong>,
@@ -51,8 +51,6 @@ export const WordsList = () => {
 
   const words: Word[] =
     data?.pages.reduce<Array<Word>>((a, b) => a.concat(b.data.words), []) || [];
-
-  console.log(words);
 
   return (
     <InfiniteScroll
