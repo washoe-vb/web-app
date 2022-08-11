@@ -75,7 +75,7 @@ export const App = () => {
                 }
               />
               <Route
-                path="/words-list"
+                path="/my-words"
                 element={
                   <RequireAuth>
                     <WordsList />
