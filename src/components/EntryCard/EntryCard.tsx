@@ -8,14 +8,15 @@ import {
   CardActions,
   Button,
 } from "@mui/material";
-type DefinitionTypes = {
+
+type EntryCardType = {
   word: string;
   definition: string;
   synonyms: string[];
   example: undefined | string;
 };
 
-export const EntryCard: VFC<DefinitionTypes> = ({
+export const EntryCard: VFC<EntryCardType> = ({
   word,
   definition,
   example,
