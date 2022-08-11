@@ -1,7 +1,6 @@
 import { useQueryString, useGetWordDefinition } from "hooks";
-import { VFC } from "react";
-import { Link } from "react-router-dom";
-import { Form, Input } from "antd";
+import { EntryCard } from "../../components/EntryCard";
+import { TextField, FormControl, Box, Typography } from "@mui/material";
 
 type WikiWordType = {
   word: string;
@@ -23,74 +22,36 @@ type WikiDefinitionType = {
   antonyms: string[];
 };
 
-type DefinitionTypes = {
-  definition: string;
-  synonyms: string[];
-  examples: undefined | string[];
-};
-
-const Definition: VFC<DefinitionTypes> = ({
-  definition,
-  synonyms,
-  examples,
-}) => (
-  <>
-    <li>
-      {definition}
-      {synonyms && " : " + JSON.stringify(synonyms.map((s) => s.toUpperCase()))}
-    </li>
-    {examples && (
-      <ul>
-        {examples.map((example, idx) => (
-          <li key={idx}>{example}</li>
-        ))}
-      </ul>
-    )}
-  </>
-);
-
 type ResultType = {
   isLoading: boolean;
   isError: boolean;
+  isSuccess: boolean;
   data: WikiWordType[];
 };
 
-const Result = ({ isLoading, isError, data }: ResultType) => {
+const Result = ({ isLoading, isError, isSuccess, data }: ResultType) => {
   if (isError) return <span>Error occured</span>;
   if (isLoading) return <span>Loading...</span>;
   if (!data.length) return <span>"Empty data</span>;
-  // if (!isSuccess) return <span>Enter some word to see it definition</span>;
+  if (!isSuccess) return <span>Enter some word to see it definition</span>;
 
   return (
     <>
       {data.map(({ word, ...instance }: WikiWordType) =>
-        instance.meanings.map((meaning: any, idx) => {
-          const { partOfSpeech } = meaning;
-          return (
-            <div key={idx}>
-              <h2>{partOfSpeech}</h2>
-              <ul>
-                {meaning.definitions.map((definition: any, idx: number) => (
-                  <Link
-                    key={idx}
-                    to={`/add-word?word=${word}&definition=${
-                      definition.definition || ""
-                    }&example=${definition.example || ""}`}
-                  >
-                    <Definition
-                      definition={definition.definition}
-                      synonyms={
-                        Boolean(definition.synonyms.length) &&
-                        definition.synonyms
-                      }
-                      examples={definition.example && [definition.example]}
-                    />
-                  </Link>
-                ))}
-              </ul>
-            </div>
-          );
-        })
+        instance.meanings.map((meaning: WikiMeaningType, idx) => (
+          <Box key={idx}>
+            <Typography variant="h5">{meaning.partOfSpeech}</Typography>
+            {meaning.definitions.map((definition: any, idx: number) => (
+              <EntryCard
+                key={idx}
+                word={word}
+                definition={definition.definition}
+                synonyms={definition.synonyms}
+                example={definition.example}
+              />
+            ))}
+          </Box>
+        ))
       )}
     </>
   );
@@ -98,22 +59,34 @@ const Result = ({ isLoading, isError, data }: ResultType) => {
 
 export const Dictionary = () => {
   const [word, onWordChange] = useQueryString("word");
-  const { isError, isLoading, data } = useGetWordDefinition(word);
-  const [form] = Form.useForm();
+  const { isError, isLoading, isSuccess, data } = useGetWordDefinition(word);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    onWordChange(data.get("word") as string);
+  };
 
   return (
     <>
-      <Form
-        form={form}
-        initialValues={{ word }}
-        onFinish={({ word }) => onWordChange(word)}
-      >
-        <Form.Item name="word">
-          <Input type="text" disabled={isLoading} placeholder="Enter a word" />
-        </Form.Item>
-      </Form>
+      <Box sx={{ mb: 4 }} component="form" onSubmit={handleSubmit} noValidate>
+        <FormControl fullWidth>
+          <TextField
+            variant="standard"
+            name="word"
+            defaultValue={word}
+            autoFocus
+            margin="normal"
+          />
+        </FormControl>
+      </Box>
 
-      <Result isLoading={isLoading} isError={isError} data={data} />
+      <Result
+        isLoading={isLoading}
+        isError={isError}
+        isSuccess={isSuccess}
+        data={data}
+      />
     </>
   );
 };
