@@ -2,6 +2,7 @@
   "name": "washoe-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://washoe-vb.github.io/web-app",
   "dependencies": {
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.9.3",
