@@ -1,13 +1,6 @@
 import { useQueryString, useGetWordDefinition } from "hooks";
 import { EntryCard } from "../../components/EntryCard";
-import {
-  Stack,
-  Link,
-  TextField,
-  FormControl,
-  Box,
-  Typography,
-} from "@mui/material";
+import { TextField, FormControl, Box, Typography } from "@mui/material";
 
 type WikiWordType = {
   word: string;
@@ -75,8 +68,8 @@ export const Dictionary = () => {
   };
 
   return (
-    <>
-      <Box sx={{ mb: 4 }} component="form" onSubmit={handleSubmit} noValidate>
+    <Box>
+      <form onSubmit={handleSubmit}>
         <FormControl fullWidth>
           <TextField
             variant="standard"
@@ -86,7 +79,7 @@ export const Dictionary = () => {
             margin="normal"
           />
         </FormControl>
-      </Box>
+      </form>
 
       <Result
         isLoading={isLoading}
@@ -94,6 +87,6 @@ export const Dictionary = () => {
         isSuccess={isSuccess}
         data={data}
       />
-    </>
+    </Box>
   );
 };

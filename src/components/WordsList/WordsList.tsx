@@ -52,10 +52,7 @@ export const WordsList = () => {
         hasMore={Boolean(hasNextPage)}
         loader={<Skeleton active />}
       >
-        <TableContainer
-          component={Paper}
-          sx={{ padding: 0, marginTop: "56px" }}
-        >
+        <TableContainer component={Paper} sx={{ padding: 0 }}>
           <Table size="small">
             <TableHead>
               <TableRow>
