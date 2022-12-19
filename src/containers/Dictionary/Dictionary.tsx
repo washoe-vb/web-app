@@ -1,6 +1,13 @@
 import { useQueryString, useGetWordDefinition } from "hooks";
 import { EntryCard } from "../../components/EntryCard";
-import { TextField, FormControl, Box, Typography } from "@mui/material";
+import {
+  Stack,
+  Link,
+  TextField,
+  FormControl,
+  Box,
+  Typography,
+} from "@mui/material";
 
 type WikiWordType = {
   word: string;

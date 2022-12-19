@@ -1,10 +1,24 @@
-import { Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  Navigate,
+  Outlet,
+  useLocation,
+  Link,
+} from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { useAuth, AuthProvider } from "hooks/use-auth";
 import { Centered } from "components/Centered";
-import { useState, useMemo } from "react";
-import { Box } from "@mui/material";
+import {
+  Box,
+  CssBaseline,
+  useMediaQuery,
+  Typography,
+  Toolbar,
+  AppBar,
+  Button,
+} from "@mui/material";
 
 import { Login } from "containers/Login";
 import { SignUp } from "containers/SignUp";
@@ -21,7 +35,7 @@ function Layout() {
       </Centered>
     );
   return (
-    <Box sx={{ p: 2 }}>
+    <Box>
       <Outlet />
     </Box>
   );
@@ -39,23 +53,39 @@ function RequireAuth({ children }: { children: JSX.Element }) {
 
 const Main = () => <Dictionary />;
 
+export const Navigation = () => (
+  <AppBar position="fixed" component="nav">
+    <Toolbar>
+      <Button component={Link} to="/">
+        Washoe
+      </Button>
+      <Box ml="auto" display="flex" gap={1}>
+        <Button component={Link} to="/add-word">
+          Add Word
+        </Button>
+        <Button component={Link} to="/my-words">
+          My Words
+        </Button>
+      </Box>
+    </Toolbar>
+  </AppBar>
+);
+
 export const App = () => {
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const theme = createTheme({
+    palette: {
+      mode: prefersDarkMode ? "dark" : "light",
+    },
+  });
+
   const queryClient = new QueryClient();
-
-  type PaletteMode = "light" | "dark";
-
-  const [mode, setMode] = useState<PaletteMode>("dark");
-
-  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) =>
-    setMode(e.matches ? "dark" : "light")
-  );
-
-  const theme = useMemo(() => createTheme({ palette: { mode } }), [mode]);
 
   return (
     <ThemeProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
+          <Navigation />
           <Routes>
             <Route element={<Layout />}>
               <Route
@@ -89,6 +119,7 @@ export const App = () => {
           </Routes>
         </AuthProvider>
       </QueryClientProvider>
+      <CssBaseline />
     </ThemeProvider>
   );
 };

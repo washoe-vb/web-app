@@ -2,9 +2,10 @@
   "name": "washoe-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://washoe-vb.github.io/web-app",
+  "homepage": "https://washoe.streltsov.dev",
   "dependencies": {
     "@mui/icons-material": "^5.8.4",
+    "@mui/lab": "^5.0.0-alpha.107",
     "@mui/material": "^5.9.3",
     "@mui/styled-engine": "npm:@mui/styled-engine-sc@latest",
     "@mui/styled-engine-sc": "^5.9.3",
@@ -34,7 +35,6 @@
     "@mui/styled-engine": "npm:@mui/styled-engine-sc@latest"
   },
   "scripts": {
-    "predeploy": "yarn build",
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
