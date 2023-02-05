@@ -1,7 +1,5 @@
 import { VFC } from "react";
 import { useAddWord } from "hooks";
-import { LoadingButton } from "@mui/lab";
-import { Save as DeleteIcon } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom";
 import {
   Box,
