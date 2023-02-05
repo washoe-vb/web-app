@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Box from "@mui/material/Box";
 import { useInfiniteQuery } from "react-query";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -22,7 +21,7 @@ import Paper from "@mui/material/Paper";
 import { Divider, styled } from "@mui/material";
 import { TextArea } from "../../components/TextArea";
 import Button from "@mui/material/Button";
-import Modal from "@mui/material/Modal";
+import { Modal } from "../../components/Modal";
 
 type WordData = {
   words: Word[];
@@ -59,7 +58,7 @@ export const WordsList = () => {
     onClose?: () => void;
   }
 
-  const EditWordCard = ({ onClose }: EditWordCardProps) => {
+  const EditWord = ({ onClose }: EditWordCardProps) => {
     const { mutate: deleteWord } = useDeleteWord();
     const { mutate: updateWord } = useUpdateWord();
     const [word, setWord] = useState(
@@ -73,20 +72,17 @@ export const WordsList = () => {
     const [example, setExample] = useState(
       words.find(({ _id }) => _id === wordId)!.example
     );
+    // <TextArea />
+    // <TextArea />
+    // <Button variant="contained" color="error" size="large">
+    //   Delete
+    // </Button>
+    // <Button variant="contained" color="primary" size="large">
+    //   Save
+    // </Button>
 
     return (
-      <Card>
-        <CardHeader
-          action={
-            onClose && (
-              <IconButton onClick={onClose}>
-                <CloseIcon />
-              </IconButton>
-            )
-          }
-          title="Edit word"
-        />
-
+      <>
         <TextArea
           value={word}
           onChange={(event) => setWord(event.target.value)}
@@ -100,10 +96,21 @@ export const WordsList = () => {
           onChange={(event) => setExample(event.target.value)}
         />
 
-        <Button onClick={() => deleteWord(wordId)}>Delete</Button>
         <Button
+          size="large"
+          variant="contained"
+          color="error"
+          onClick={() => deleteWord(wordId)}
+        >
+          Delete
+        </Button>
+        <Button
+          size="large"
+          variant="contained"
+          color="primary"
           onClick={() =>
             updateWord({
+              _id: wordId,
               word,
               definition: definition || "",
               example: example || "",
@@ -112,28 +119,14 @@ export const WordsList = () => {
         >
           Save
         </Button>
-      </Card>
+      </>
     );
-  };
-
-  const style = {
-    position: "absolute" as "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
   };
 
   return (
     <>
-      <Modal open={Boolean(wordId)} onClose={() => setWordId("")}>
-        <Box sx={style}>
-          <EditWordCard onClose={() => setWordId("")} />
-        </Box>
+      <Modal isOpen={Boolean(wordId)} onClose={() => setWordId("")}>
+        <EditWord />
       </Modal>
       <InfiniteScroll
         dataLength={words.length}
