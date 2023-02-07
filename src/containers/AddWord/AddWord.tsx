@@ -1,11 +1,11 @@
 import { useQueryString, useAddWord } from "hooks";
 import { Form, Typography, message, Input, Button } from "antd";
 import { Centered } from "components/Centered";
-import { DictionaryEntry } from "washoe-goods";
+import { UnsavedWord } from "types";
 
 const { Title } = Typography;
 
-const removeEmptyFields = ({ word, definition, example }: DictionaryEntry) => ({
+const removeEmptyFields = ({ word, definition, example }: UnsavedWord) => ({
   word,
   ...(definition ? { definition } : {}),
   ...(example ? { example } : {}),
@@ -19,7 +19,7 @@ export const AddWord = () => {
   const { mutate: addWord, isLoading } = useAddWord();
   const [form] = Form.useForm();
 
-  const handleAddWord = (formValues: DictionaryEntry) => {
+  const handleAddWord = (formValues: UnsavedWord) => {
     addWord(removeEmptyFields(formValues), {
       onSuccess() {
         message.success("Success!");

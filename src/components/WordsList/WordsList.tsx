@@ -9,7 +9,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Skeleton } from "antd";
 import { AxiosResponse } from "axios";
 import { useDeleteWord } from "../../api/queries/deleteWord";
-import { Word } from "washoe-goods";
+import { Word } from "../../types";
 import { instance } from "api";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
