@@ -1,5 +1,7 @@
 import { instance } from "../";
-import { useMutation } from "react-query";
+import { useMutation, QueryClient } from "react-query";
+
+const queryClient = new QueryClient();
 
 interface Data {
   _id: string;
@@ -9,4 +11,7 @@ interface Data {
 }
 
 export const useUpdateWord = () =>
-  useMutation((data: Data) => instance.patch("/word/update", data));
+  useMutation((data: Data) => instance.patch("/word/update", data), {
+    onSuccess: () =>
+      queryClient.invalidateQueries("words", { refetchInactive: true }),
+  });

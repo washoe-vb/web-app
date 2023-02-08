@@ -1,10 +1,6 @@
-import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useInfiniteQuery } from "react-query";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
 import { useUpdateWord } from "../../api/queries/updateWord";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Skeleton } from "antd";
 import { AxiosResponse } from "axios";
@@ -19,9 +15,9 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Divider, styled } from "@mui/material";
-import { TextArea } from "../../components/TextArea";
-import Button from "@mui/material/Button";
+import { Button } from "../Button";
 import { Modal } from "../../components/Modal";
+import { WordForm } from "components/WordForm";
 
 type WordData = {
   words: Word[];
@@ -42,7 +38,7 @@ function getNextPageParam(
 }
 
 export const WordsList = () => {
-  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery(
+  const { data, fetchNextPage, hasNextPage, refetch } = useInfiniteQuery(
     "words",
     ({ pageParam = 0 }) =>
       instance.get("/word", { params: { skip: pageParam, limit: LIMIT } }),
@@ -52,81 +48,40 @@ export const WordsList = () => {
   const words: Word[] =
     data?.pages.reduce<Array<Word>>((a, b) => a.concat(b.data.words), []) || [];
 
-  const [wordId, setWordId] = useState("");
+  const { mutate: deleteWord } = useDeleteWord();
+  const { mutate: updateWord } = useUpdateWord();
 
-  interface EditWordCardProps {
-    onClose?: () => void;
-  }
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const EditWord = ({ onClose }: EditWordCardProps) => {
-    const { mutate: deleteWord } = useDeleteWord();
-    const { mutate: updateWord } = useUpdateWord();
-    const [word, setWord] = useState(
-      words.find(({ _id }) => _id === wordId)!.word
+  const { _id, word, definition, example } = Object.fromEntries(
+    searchParams.entries()
+  );
+
+  const handleDeleteWord = () => {
+    deleteWord(_id, { onSuccess: () => void refetch() });
+    setSearchParams({});
+  };
+
+  const handleUpdateWord = () => {
+    updateWord(
+      { _id, word, definition, example },
+      { onSuccess: () => void refetch() }
     );
-
-    const [definition, setDefinition] = useState(
-      words.find(({ _id }) => _id === wordId)!.definition
-    );
-
-    const [example, setExample] = useState(
-      words.find(({ _id }) => _id === wordId)!.example
-    );
-    // <TextArea />
-    // <TextArea />
-    // <Button variant="contained" color="error" size="large">
-    //   Delete
-    // </Button>
-    // <Button variant="contained" color="primary" size="large">
-    //   Save
-    // </Button>
-
-    return (
-      <>
-        <TextArea
-          value={word}
-          onChange={(event) => setWord(event.target.value)}
-        />
-        <TextArea
-          value={definition}
-          onChange={(event) => setDefinition(event.target.value)}
-        />
-        <TextArea
-          value={example}
-          onChange={(event) => setExample(event.target.value)}
-        />
-
-        <Button
-          size="large"
-          variant="contained"
-          color="error"
-          onClick={() => deleteWord(wordId)}
-        >
-          Delete
-        </Button>
-        <Button
-          size="large"
-          variant="contained"
-          color="primary"
-          onClick={() =>
-            updateWord({
-              _id: wordId,
-              word,
-              definition: definition || "",
-              example: example || "",
-            })
-          }
-        >
-          Save
-        </Button>
-      </>
-    );
+    setSearchParams({});
   };
 
   return (
     <>
-      <Modal isOpen={Boolean(wordId)} onClose={() => setWordId("")}>
-        <EditWord />
+      <Modal
+        title="Edit word"
+        isOpen={Boolean(_id)}
+        onClose={() => setSearchParams({})}
+      >
+        <WordForm />
+        <Button color="danger" onClick={handleDeleteWord}>
+          Delete
+        </Button>
+        <Button onClick={handleUpdateWord}>Save</Button>
       </Modal>
       <InfiniteScroll
         dataLength={words.length}
@@ -143,17 +98,29 @@ export const WordsList = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {words.map((word) => (
-                <TableRow key={word._id} onClick={() => setWordId(word._id)}>
+              {words.map(({ _id, word, definition = "", example = "" }) => (
+                <TableRow
+                  key={_id}
+                  onClick={() =>
+                    setSearchParams(
+                      new URLSearchParams({
+                        _id,
+                        word,
+                        definition,
+                        example,
+                      })
+                    )
+                  }
+                >
                   <TableCell component="th" scope="row">
-                    {word.word}
+                    {word}
                   </TableCell>
                   <TableCell>
-                    {word.definition}
-                    {Boolean(word.definition && word.example) && (
+                    {definition}
+                    {Boolean(definition && example) && (
                       <Divider sx={{ margin: "4px" }} />
                     )}
-                    <i>{word.example}</i>
+                    <i>{example}</i>
                   </TableCell>
                 </TableRow>
               ))}

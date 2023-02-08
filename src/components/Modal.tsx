@@ -11,14 +11,16 @@ import {
 import Card from "@mui/material/Card";
 
 interface ModalProps {
-  onClose: () => void;
+  onClose?: () => void;
   isOpen: boolean;
+  title: string;
 }
 
 export function Modal({
   children,
   onClose,
   isOpen,
+  title,
 }: PropsWithChildren<ModalProps>) {
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down("sm")
@@ -52,7 +54,7 @@ export function Modal({
               </IconButton>
             )
           }
-          title="Edit word"
+          title={title}
         />
         <CardContent
           sx={{ display: "flex", flexDirection: "column", gap: "24px" }}

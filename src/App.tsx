@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { AuthProvider } from "hooks/use-auth";
 import { CssBaseline, useMediaQuery } from "@mui/material";
 import { MyRoutes } from "./Routes";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 export const App = () => {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
@@ -25,6 +26,7 @@ export const App = () => {
               <MyRoutes />
             </BrowserRouter>
           </AuthProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
         <CssBaseline />
       </ThemeProvider>
